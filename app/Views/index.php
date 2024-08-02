@@ -164,7 +164,7 @@
                             console.log('Response:', response);
                             if(response.error){
                               $("#image").addClass('is-invalid'); 
-                              $("#image").next().text(response.message); 
+                              $("#image").next().text(response.message.text); 
                             }else{
                                $("#add_post_modal").modal('hide');
                                $("#add_post_form")[0].reset();

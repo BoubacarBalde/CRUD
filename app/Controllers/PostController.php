@@ -86,10 +86,6 @@ class PostController extends BaseController
                 'message' => $data,
             ]);
         }else{
-            // ini_set('display_errors', 1);
-            // ini_set('display_startup_errors', 1);
-            // error_reporting(E_ALL);
-
             return $this->response->setJSON([
                 'error' => true,
                 'message' => '<div class="text-secondary text-center fw-bold my-5">Not posts fonds in the database!</div>'
@@ -121,8 +117,6 @@ class PostController extends BaseController
             $file->move('uploads/avatar', $fileName);
             if($this->request->getPost('old_image') != ''){
                unlink('uploads/avatar/'.$this->request->getPost('old_image'));
-            }else{
-                return null;
             }
         }else{
             $fileName = $this->request->getPost('old_image');
