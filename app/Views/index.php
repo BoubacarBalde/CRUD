@@ -149,7 +149,7 @@
                     $(this).addClass('was-validated')
                 }else{
                     $("#add_post_btn").text("Adding...");
-                    const url = `<?= base_url('post/add')?>`;
+                    const url = '<?= base_url('post/add')?>';
                     console.log('URL:', url);
                     console.log([...formData.entries()]);
                     $.ajax({
@@ -157,14 +157,14 @@
                         method: 'post',
                         data: formData,
                         contentType: false,
-                        caches:false,
+                        cache:false,
                         processData: false,
                         dataType: 'json', 
                         success: function(response){
                             console.log('Response:', response);
                             if(response.error){
                               $("#image").addClass('is-invalid'); 
-                              $("#image").next().text(response.message.image); 
+                              $("#image").next().text(response.message); 
                             }else{
                                $("#add_post_modal").modal('hide');
                                $("#add_post_form")[0].reset();
@@ -203,7 +203,7 @@
             });
         });
 
-        //audate post
+        //update post
         $("#edit_post_form").submit(function(e){
             e.preventDefault();
             const formData = new FormData(this);
@@ -220,11 +220,14 @@
                     method: 'post',
                     data: formData,
                     contentType: false,
-                    caches:false,
+                    cache:false,
                     processData: false,
                     dataType: 'json', 
                     success: function(response){
                         $("#edit_post_modal").modal('hide');
+                        $("#edit_post_form")[0].reset();
+                        $("#image").removeClass('is-invalid'); 
+                        $("#image").next().text('');
                         Swal.fire(
                             'Apdaded',
                             response.message,
@@ -237,28 +240,29 @@
             };
         });
 
-        //Detail Post
+        // Detail Post
         $(document).delegate('.post_detail_btn', 'click', function(e){
             e.preventDefault();
-            const id = $this.attr('id');
+            const id = $(this).attr('id'); // Changement de $this à $(this)
             $.ajax({
                 url:'<?= base_url('post/detail/')?>/' + id,
                 method:'get', 
                 dataType:'json',
                 success: function (response) {
-                   $("#detail_post_image").attr('src','<?= base_url('uploads/avatar/') ?>/' + response.message.image);
-                   $("#detail_post_title").text(response.message.title);
-                   $("#detail_post_category").text(response.message.category);
-                   $("#detail_post_body").text(response.message.body);
-                   $("#detail_post_created").text(response.message.created_at);
+                $("#detail_post_image").attr('src','<?= base_url('uploads/avatar/') ?>/' + response.message.image);
+                $("#detail_post_title").text(response.message.title);
+                $("#detail_post_category").text(response.message.category);
+                $("#detail_post_body").text(response.message.body);
+                $("#detail_post_created").text(response.message.created_at);
                 }
             });
         });
 
-        //Delete Post
+
+        // Delete Post
         $(document).delegate('.post_delete_btn', 'click', function(e){
             e.preventDefault();
-            const id = $(this).attr('id')
+            const id = $(this).attr('id');
             Swal.fire({
                 title: "Are you sure?",
                 text: "You won't be able to revert this!",
@@ -275,23 +279,27 @@
                         success: function (response) {
                             Swal.fire(
                                 'Deleted!',
-                                 response.message,
+                                response.message,
                                 'success'
                             );  
                             fetchAllPosts();  
                         }      
-                   });
+                    });
                 }
             });
         });
+
 
         //fetch all post ajax request
         fetchAllPosts();
         function fetchAllPosts()
         {
            $.ajax({
-              url: '<?= base_url('post/fetch') ?>',
+              url:'<?= base_url('post/fetch') ?>',
               method:'get',
+              contentType: false,
+              cache:false,
+              processData: false,
               success:function(response){
                 $("#show_posts").html(response.message);
               }
