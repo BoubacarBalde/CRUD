@@ -234,7 +234,7 @@
                             'success'
                         );
                         fetchAllPosts();
-                        $("#edit_post_btn").text('Udate post');
+                        $("#edit_post_btn").text('Update post');
                     },
                 });
             };

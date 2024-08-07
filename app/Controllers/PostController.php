@@ -134,7 +134,7 @@ class PostController extends BaseController
         $postModel->update($id, $data);
         return $this->response->setJSON([
             'error' => false,
-            'message' => 'Successfully added new post!',
+            'message' => 'Successfully update post!',
         ]);
     }
 
